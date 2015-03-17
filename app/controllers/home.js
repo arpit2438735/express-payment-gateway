@@ -1,7 +1,8 @@
 var express = require('express'),
-  router = express.Router(),
-  mongoose = require('mongoose'),
-  Article = mongoose.model('Article');
+    router = express.Router(),
+    mongoose = require('mongoose'),
+    Article = mongoose.model('Article'),
+    paymentMerchant = require('../../app/helpers/paypal');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -15,4 +16,8 @@ router.get('/', function (req, res, next) {
       articles: articles
     });
   });
+});
+
+router.get('/payment', function(req, res, next) {
+  paymentMerchant.payment(req, next);
 });

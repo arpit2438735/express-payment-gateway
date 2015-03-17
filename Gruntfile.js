@@ -12,11 +12,22 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/**/*Test.js']
+      }
+    },
+    
     develop: {
       server: {
         file: 'app.js'
       }
     },
+    
     watch: {
       options: {
         nospawn: true,
@@ -65,8 +76,10 @@ module.exports = function (grunt) {
         });
     }, 500);
   });
-
+  grunt.loadNpmTasks('grunt-mocha-test');
+  
   grunt.registerTask('default', [
+    'mochaTest',
     'develop',
     'watch'
   ]);
