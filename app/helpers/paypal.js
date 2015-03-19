@@ -11,18 +11,43 @@ if (!paypalConfig) {
 }
 
 paypal.configure({
-
 	'mode': paypalConfig.mode,
 	'client_id': paypalConfig.clientId,
 	'client_secret': paypalConfig.clientSecret
 });
 
-
+var formatDatatoPaypal = function (details) {
+	return {
+		"payer": {
+			"payment_method": "credit_card",
+			"funding_instruments": [{
+				"credit_card": {
+					"type": details.method,
+					"number": details.cardNumber,
+					"expire_month": details.month,
+					"expire_year": details.year,
+					"cvv2": details.cvv,
+					"first_name": details.firstName,
+					"last_name": details.lastName
+				}
+			}],
+			"transactions": [{
+				"amount": {
+					"total": details.price,
+					"currency": details.currency
+				},
+				"description": "This is the payment transaction description."
+			}]
+		}
+	};
+	
+};
 module.exports = {
 	
 	payment: function (paymentDetails) {
+		var formattedPaymentDetail = formatDatatoPaypal(paymentDetails);
 
-		paypal.creditCard.create(paymentDetails, function(error, creditCard) {
+		paypal.creditCard.create(formattedPaymentDetail, function(error, creditCard) {
 
 			if(error) {
 				return error;

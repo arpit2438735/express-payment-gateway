@@ -1,23 +1,16 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
-    Article = mongoose.model('Article'),
-    paymentMerchant = require('../../app/helpers/paypal');
+    paymentMethod = require('../../app/services/payment');
 
 module.exports = function (app) {
   app.use('/', router);
 };
 
-router.get('/', function (req, res, next) {
-  Article.find(function (err, articles) {
-    if (err) return next(err);
-    res.render('index', {
-      title: 'Generator-Express MVC',
-      articles: articles
-    });
-  });
+router.get('/', function (req, res) {
+    res.render('index');
 });
 
-router.get('/payment', function(req, res, next) {
-  paymentMerchant.payment(req, next);
+router.post('/payment', function(req, res, next) {
+    return paymentMethod.startProcess(req.body, next);
 });
