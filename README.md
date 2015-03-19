@@ -4,7 +4,7 @@ Payment Gateway
 #Running the Server
 
 1. install packages using `npm install`
-2. then run `grunt` //Run all test cases and open server
+2. then run `grunt` //Run all test cases and open port to run the server
 3. then open browser and type `localhost:3000`
 
 ### Supported credit card format are:-
